@@ -117,10 +117,10 @@ def tamilmv():
 def scrape_and_send_latest_movies():
     tamilmv()  # Scraping latest movies
     for movie_name, links in real_dict.items():
-        message = f"New upload!\n\n*{movie_name}*\n\n"
         for link in links:
-            message += f"{link}\n"
-        send_to_channel(message)
+            message = f"*{movie_name}*\n\n{link}"
+            send_to_channel(message)
+
 
 def main():
     scheduler = BackgroundScheduler()

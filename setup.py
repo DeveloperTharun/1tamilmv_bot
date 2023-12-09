@@ -49,7 +49,7 @@ def makeKeyboard():
     return markup
 
 def tamilmv():
-    mainUrl = 'https://www.1tamilmv.tips/'
+    mainUrl = 'https://www.1tamilmv.phd/'
     mainlink = []
 
     headers = {
@@ -109,8 +109,8 @@ def tamilmv():
         for p in range(0, len(mag)):
             try:
                 real_dict.setdefault(movie_list[num], [])
-                message = real_dict[movie_list[num]].append((f"*{alltitles[p]}* -->\n🧲 `{mag[p]}`"))
-                send_to_channel(message)
+                real_dict[movie_list[num]].append((f"*{alltitles[p]}* -->\n🧲 `{mag[p]}`"))
+            
             except:
                 pass
 
@@ -132,7 +132,7 @@ def main():
     bot.infinity_polling(timeout=10, long_polling_timeout=5)
 
 if __name__ == '__main__':
-    #scrape_and_send_latest_movies()
+    scrape_and_send_latest_movies()
     tamilmv() 
     main()
         

@@ -116,17 +116,17 @@ def tamilmv():
 
         num = num + 1
 
-#def scrape_and_send_latest_movies():
-    #tamilmv()  # Scraping latest movies
-    #for movie_name, links in real_dict.items():
-       # for link in links:
-          #  message = f"*{movie_name}*\n\n{link}"
-          #  send_to_channel(message)
+def scrape_and_send_latest_movies():
+    tamilmv()  # Scraping latest movies
+    for movie_name, links in real_dict.items():
+        for link in links:
+            message = f"*{movie_name}*\n\n{link}"
+            send_to_channel(message)
 
 
 def main():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(tamilmv, 'interval', minutes=30)  # Adjust interval as needed
+    scheduler.add_job(tamilmv(), 'interval', minutes=30)  # Adjust interval as needed
     scheduler.start()
     
     bot.infinity_polling(timeout=10, long_polling_timeout=5)

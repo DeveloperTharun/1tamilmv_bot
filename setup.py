@@ -134,6 +134,6 @@ def main():
 
 if __name__ == '__main__':
     scrape_and_send_latest_movies()
-    tamilmv() 
+    #tamilmv() 
     main()
         

@@ -18,7 +18,7 @@ keyboard2 = types.InlineKeyboardMarkup().add(button2).add(button3)
 
 def send_to_channel(text):
     bot.send_message(chat_id=CHANNEL_ID, text=text, parse_mode='markdown')
-
+    await bot.sleep(5)
 @bot.message_handler(commands=['start'])
 def random_answer(message):
     bot.send_message(chat_id=message.chat.id, text=f"Hello👋 \n\n🗳Get latest Movies from 1Tamilmv\n\n⚙️*How to use me??*🤔\n\n✯ Please Enter */view* command and you'll get magnet link as well as link to torrent file 😌\n\nShare and Support💝", parse_mode='Markdown', reply_markup=keyboard)

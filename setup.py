@@ -133,7 +133,7 @@ def main():
     bot.infinity_polling(timeout=10, long_polling_timeout=5)
 
 if __name__ == '__main__':
-    scrape_and_send_latest_movies()
+    #scrape_and_send_latest_movies()
     #tamilmv() 
     main()
         

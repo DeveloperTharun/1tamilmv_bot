@@ -3,7 +3,8 @@ from telebot import types
 import requests
 import re
 from bs4 import BeautifulSoup
-from apscheduler.schedulers.background import BackgroundScheduler  # Install apscheduler library
+from apscheduler.schedulers.background import BackgroundScheduler # Install apscheduler library
+import time
 
 TOKEN = '5542112837:AAFlLC3MyT76tsVFzCVArncjHiVa_9VrV4U'
 CHANNEL_ID = '-1001629945417'  # Replace with your actual channel ID

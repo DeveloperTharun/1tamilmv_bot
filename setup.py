@@ -109,18 +109,19 @@ def tamilmv():
         for p in range(0, len(mag)):
             try:
                 real_dict.setdefault(movie_list[num], [])
-                real_dict[movie_list[num]].append((f"*{alltitles[p]}* -->\n🧲 `{mag[p]}`"))
+                message = real_dict[movie_list[num]].append((f"*{alltitles[p]}* -->\n🧲 `{mag[p]}`"))
+                send_to_channel(message)
             except:
                 pass
 
         num = num + 1
 
-def scrape_and_send_latest_movies():
+#def scrape_and_send_latest_movies():
     tamilmv()  # Scraping latest movies
-    for movie_name, links in real_dict.items():
-        for link in links:
-            message = f"*{movie_name}*\n\n{link}"
-            send_to_channel(message)
+    #for movie_name, links in real_dict.items():
+       # for link in links:
+          #  message = f"*{movie_name}*\n\n{link}"
+          #  send_to_channel(message)
 
 
 def main():
@@ -131,6 +132,7 @@ def main():
     bot.infinity_polling(timeout=10, long_polling_timeout=5)
 
 if __name__ == '__main__':
-    scrape_and_send_latest_movies()
+    #scrape_and_send_latest_movies()
+    tamilmv() 
     main()
         

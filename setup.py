@@ -17,8 +17,8 @@ button3 = types.InlineKeyboardButton(text="📜 Status channel ", url='https://t
 keyboard = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton('👨‍💻 Developed by', url='github.com/shinas101')).add(button1).add(button2).add(button3)
 keyboard2 = types.InlineKeyboardMarkup().add(button2).add(button3)
 
-def send_to_channel(text):
-    bot.send_message(chat_id=CHANNEL_ID, text=text, parse_mode='markdown')
+def send_to_telegram(message):
+    bot.send_message(chat_id=CHANNEL_ID, text=message, parse_mode='markdown')
     time.sleep(5)
 @bot.message_handler(commands=['start'])
 def random_answer(message):
@@ -106,14 +106,30 @@ def tamilmv():
             else:
                 if title.find('span').text.endswith('torrent'):
                     alltitles.append(title.find('span').text[19:-8])
+         # File to store processed magnet links
+        processed_links_file = 'processed_links.txt'
 
+# Load previously processed magnet links
+        processed_links = set()
+        if os.path.exists(processed_links_file):
+         with open(processed_links_file, 'r') as file:
+         processed_links = set(file.read().splitlines())
         for p in range(0, len(mag)):
-            try:
+             try:
                 real_dict.setdefault(movie_list[num], [])
-                real_dict[movie_list[num]].append((f"*{alltitles[p]}* -->\n🧲 `{mag[p]}`"))
+                update_message = f"*{alltitles[p]}* -->\n🧲 `{mag[p]}`\n🗒️->[Torrent file]({filelink[p]})"
+        
+        # Check if the magnet link is new
+                if mag[p] not in processed_links:
+                    real_dict[movie_list[num]].append(update_message)
             
-            except:
-                pass
+            # Send the update to Telegram
+                    bot.send_message(chat_id=channel_username, text=update_message)
+
+            # Add the magnet link to processed_links set
+                    processed_links.add(mag[p])
+              except:
+                    pass
 
         num = num + 1
 

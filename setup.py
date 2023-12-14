@@ -6,8 +6,8 @@ from bs4 import BeautifulSoup
 import requests
 import re
 
-TOKEN = 'YOUR_BOT_TOKEN'
-CHANNEL_ID = '@your_channel_username'  # Replace with your actual channel username
+TOKEN = '5542112837:AAFlLC3MyT76tsVFzCVArncjHiVa_9VrV4U'
+CHANNEL_ID = '-1001629945417'  # Replace with your actual channel username
 
 bot = telegram.Bot(token=TOKEN)
 

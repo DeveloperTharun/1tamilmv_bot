@@ -1,58 +1,21 @@
-from telebot import TeleBot
-from telebot import types
+import os
+import telegram
+from telegram.ext import Updater
+from apscheduler.schedulers.background import BackgroundScheduler
+from bs4 import BeautifulSoup
 import requests
 import re
-from bs4 import BeautifulSoup
-from apscheduler.schedulers.background import BackgroundScheduler # Install apscheduler library
-import time
 
-TOKEN = '5542112837:AAFlLC3MyT76tsVFzCVArncjHiVa_9VrV4U'
-CHANNEL_ID = '-1001629945417'  # Replace with your actual channel ID
+TOKEN = 'YOUR_BOT_TOKEN'
+CHANNEL_ID = '@your_channel_username'  # Replace with your actual channel username
 
-bot = TeleBot(TOKEN)
-
-button1 = types.InlineKeyboardButton(text="⚡Powered by ", url='https://t.me/heyboy2004')
-button2 = types.InlineKeyboardButton(text="🔗 Gdrive channel ", url='https://t.me/GdtotLinkz')
-button3 = types.InlineKeyboardButton(text="📜 Status channel ", url='https://t.me/TmvStatus')
-keyboard = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton('👨‍💻 Developed by', url='github.com/shinas101')).add(button1).add(button2).add(button3)
-keyboard2 = types.InlineKeyboardMarkup().add(button2).add(button3)
+bot = telegram.Bot(token=TOKEN)
 
 def send_to_telegram(message):
     bot.send_message(chat_id=CHANNEL_ID, text=message, parse_mode='markdown')
-    time.sleep(5)
-@bot.message_handler(commands=['start'])
-def random_answer(message):
-    bot.send_message(chat_id=message.chat.id, text=f"Hello👋 \n\n🗳Get latest Movies from 1Tamilmv\n\n⚙️*How to use me??*🤔\n\n✯ Please Enter */view* command and you'll get magnet link as well as link to torrent file 😌\n\nShare and Support💝", parse_mode='Markdown', reply_markup=keyboard)
-
-@bot.message_handler(commands=['view'])
-def start(message):
-    bot.send_message(message.chat.id, text="*Please wait for 10 seconds*", parse_mode='Markdown')
-    scrape_and_send_latest_movies()
-
-@bot.callback_query_handler(func=lambda message: True)
-def callback_query(call):
-    bot.send_message(call.message.chat.id, text=f"Here's your Movie links 🎥 ", parse_mode='markdown')
-    for key, value in enumerate(movie_list):
-        if call.data == f"{key}":
-            print("HI")
-            if movie_list[int(call.data)] in real_dict.keys():
-                for i in real_dict[movie_list[int(call.data)]]:
-                    bot.send_message(call.message.chat.id, text=f"{i}\n\n🤖 @Tamilmv\_movie\_bot", parse_mode='markdown')
-                    print(real_dict[movie_list[int(call.data)]])
-    bot.send_message(call.message.chat.id, text=f"🌐 Please Join Our Status Channel", parse_mode='markdown', reply_markup=keyboard2)
-
-def makeKeyboard():
-    markup = types.InlineKeyboardMarkup()
-
-    for key, value in enumerate(movie_list):
-        markup.add(types.InlineKeyboardButton(text=value, callback_data=f"{key}"))
-
-    return markup
 
 def tamilmv():
     mainUrl = 'https://www.1tamilmv.phd/'
-    mainlink = []
-
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36',
         'sec-ch-ua': '"Chromium";v="106", "Google Chrome";v="106", "Not;A=Brand";v="99"',
@@ -86,8 +49,17 @@ def tamilmv():
 
     for element in badtitles:
         movie_dict[element.strip()] = None
-    print(badtitles)
+
     movie_list = list(movie_dict)
+
+    # File to store processed magnet links
+    processed_links_file = 'processed_links.txt'
+
+    # Load previously processed magnet links
+    processed_links = set()
+    if os.path.exists(processed_links_file):
+        with open(processed_links_file, 'r') as file:
+            processed_links = set(file.read().splitlines())
 
     for url in linker:
         html = requests.request("GET", url)
@@ -96,44 +68,40 @@ def tamilmv():
         bigtitle = soup.find_all('a')
         alltitles = []
         mag = []
+        filelink = []  # Added this line to fix the NameError
         for i in soup.find_all('a', href=True):
             if i['href'].startswith('magnet'):
                 mag.append(i['href'])
 
+        for a in soup.findAll('a', {"data-fileext": "torrent", 'href': True}):
+            filelink.append(a['href'])  # Added this line to fix the NameError
+
         for title in bigtitle:
-            if title.find('span') == None:
+            if title.find('span') is None:
                 pass
             else:
                 if title.find('span').text.endswith('torrent'):
                     alltitles.append(title.find('span').text[19:-8])
-         # File to store processed magnet links
-        processed_links_file = 'processed_links.txt'
 
-# Load previously processed magnet links
-        processed_links = set()
-        if os.path.exists(processed_links_file):
-         with open(processed_links_file, 'r') as file:
-         processed_links = set(file.read().splitlines())
         for p in range(0, len(mag)):
-             try:
+            try:
                 real_dict.setdefault(movie_list[num], [])
                 update_message = f"*{alltitles[p]}* -->\n🧲 `{mag[p]}`\n🗒️->[Torrent file]({filelink[p]})"
-        
-        # Check if the magnet link is new
+                # Check if the magnet link is new
                 if mag[p] not in processed_links:
                     real_dict[movie_list[num]].append(update_message)
-            
-            # Send the update to Telegram
-                    bot.send_message(chat_id=channel_username, text=update_message)
-
-            # Add the magnet link to processed_links set
+                    # Send the update to Telegram
+                    send_to_telegram(update_message)
+                    # Add the magnet link to processed_links set
                     processed_links.add(mag[p])
-              except:
-                    pass
+            except:
+                pass
 
         num = num + 1
 
-
+    # Save processed magnet links back to the file
+    with open(processed_links_file, 'w') as file:
+        file.write('\n'.join(processed_links))
 
 def main():
     scheduler = BackgroundScheduler()
@@ -143,7 +111,4 @@ def main():
     bot.infinity_polling(timeout=10, long_polling_timeout=5)
 
 if __name__ == '__main__':
-    #scrape_and_send_latest_movies()
-    #tamilmv() 
     main()
-        

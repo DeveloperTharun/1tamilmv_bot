@@ -137,7 +137,7 @@ def tamilmv():
 
 def main():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(scrape_and_send_latest_movies, 'interval', minutes=30)  # Adjust interval as needed
+    scheduler.add_job(tamilmv, 'interval', minutes=30)  # Adjust interval as needed
     scheduler.start()
     
     bot.infinity_polling(timeout=10, long_polling_timeout=5)

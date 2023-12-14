@@ -107,8 +107,15 @@ def main():
     scheduler = BackgroundScheduler()
     scheduler.add_job(tamilmv, 'interval', minutes=30)  # Adjust interval as needed
     scheduler.start()
-    
-    bot.infinity_polling(timeout=10, long_polling_timeout=5)
+
+    updater = Updater(token=TOKEN, use_context=True)
+    dp = updater.dispatcher
+
+    # Start the polling process
+    updater.start_polling()
+
+    # Block until the user presses Ctrl-C
+    updater.idle()
 
 if __name__ == '__main__':
     main()

@@ -133,12 +133,6 @@ def tamilmv():
 
         num = num + 1
 
-def scrape_and_send_latest_movies():
-    tamilmv()  # Scraping latest movies
-    for movie_name, links in real_dict.items():
-        for link in links:
-            message = f"*{movie_name}*\n\n{link}"
-            send_to_channel(message)
 
 
 def main():

@@ -139,6 +139,7 @@ def tamilmv():
                 if update_message not in processed_links:
                     real_dict[movie_list[num]].append(update_message)
                     processed_links.add(update_message)
+                    bot.send_message(CHANNEL_ID, text=update_message, parse_mode='markdown')
             except:
                 pass
             

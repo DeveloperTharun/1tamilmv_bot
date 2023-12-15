@@ -40,21 +40,21 @@ def start(message):
 
 @bot.callback_query_handler(func=lambda message: True)
 def callback_query(call):
-    bot.send_message(call.message.chat.id, text=f"Here's your Movie links 🎥 ", parse_mode='markdown')
+    bot.send_message(CHANNEL_ID, text=f"Here's your Movie links 🎥 ", parse_mode='markdown')
     for key, value in enumerate(movie_list):
         if call.data == f"{key}":
             if movie_list[int(call.data)] in real_dict.keys():
                 for i in real_dict[movie_list[int(call.data)]]:
                     # Check if the magnet link is new
                     if i not in processed_links:
-                        bot.send_message(call.message.chat.id, text=f"{i}\n\n🤖 @Tamilmv\_movie\_bot", parse_mode='markdown')
+                        bot.send_message(CHANNEL_ID, text=f"{i}\n\n🤖 @Tamilmv\_movie\_bot", parse_mode='markdown')
                         processed_links.add(i)
 
     # Save processed magnet links back to the file
     with open(processed_links_file, 'w') as file:
         file.write('\n'.join(processed_links))
 
-    bot.send_message(call.message.chat.id, text=f"🌐 Please Join Our Status Channel", parse_mode='markdown', reply_markup=keyboard2)
+    bot.send_message(message.chat.id, text=f"🌐 Please Join Our Status Channel", parse_mode='markdown', reply_markup=keyboard2)
 
 def makeKeyboard():
     markup = types.InlineKeyboardMarkup()

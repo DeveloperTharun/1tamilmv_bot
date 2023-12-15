@@ -145,4 +145,5 @@ def tamilmv():
         num = num + 1
 
 if __name__ == '__main__':
-    bot.infinity_polling(timeout=10, long_polling_timeout=5)
+    bot.polling(none_stop=True)
+    

@@ -118,7 +118,7 @@ def tamilmv():
 #             print(f"*{alltitles[p]}* -->\n🧲 `{mag[p]}`\n🗒️->[Torrent file]({filelink[p]})")
             try:
               real_dict.setdefault(movie_list[num],[])
-              real_dict[movie_list[num]].append((f"*{alltitles[p]}* -->\n🧲 `{mag[p]}`\n🗒️->[Torrent file]({filelink[p]})"))
+              real_dict[movie_list[num]].append((f"`{mag[p]}`\n*{alltitles[p]}*\n🗒️->[Torrent file]({filelink[p]})"))
             except:
               pass
             

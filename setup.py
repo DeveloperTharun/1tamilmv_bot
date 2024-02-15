@@ -34,7 +34,6 @@ def callback_query(call):
     bot.send_message(call.message.chat.id,text=f"Here's your Movie links 🎥 ",parse_mode='markdown')
     for key , value in enumerate(movie_list):
         if call.data == f"{key}":
-            print("HI")
             if movie_list[int(call.data)] in real_dict.keys():
                 for i in real_dict[movie_list[int(call.data)]]:                  
                   bot.send_message(call.message.chat.id,text=f"{i}\n\n🤖 @Tamilmv\_movie\_bot",parse_mode='markdown')

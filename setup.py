@@ -5,8 +5,8 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-TOKEN = '5542112837:AAFlLC3MyT76tsVFzCVArncjHiVa_9VrV4U'
-CHANNEL_ID = '-1001629945417'  # Replace with your actual channel username
+TOKEN = '6351015372:AAGgmUjjVwwaQF8rQCqlwkjKCcBdxPZhKQw'
+CHANNEL_ID = '-1002064153774'  # Replace with your actual channel username
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -49,7 +49,7 @@ def makeKeyboard():
     return markup
 
 def tamilmv():
-    mainUrl = 'https://www.1tamilmv.world/'
+    mainUrl = 'https://www.1tamilmv.yt/'
     mainlink = []
 
     headers = {
